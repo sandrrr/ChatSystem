@@ -5,7 +5,7 @@ public class User {
     private String pseudo;
     private byte[] adressMAC ;
     private InetAddress adressIP;
-    
+    private boolean isConnected ;
     User(String pseudo){
     	//vérification doublante
     	//notify all users
@@ -38,7 +38,13 @@ public class User {
 
 	    }
     }
-    public byte[] getAdressMAC() {
+    public boolean isConnected() {
+		return isConnected;
+	}
+	public void setConnected(boolean isConnected) {
+		this.isConnected = isConnected;
+	}
+	public byte[] getAdressMAC() {
         return adressMAC;
     }
 
