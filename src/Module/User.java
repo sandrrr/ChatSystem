@@ -1,16 +1,17 @@
 package Module;
 import java.net.*;
+
 //utilisateur
 public class User {
     private String pseudo;
     private byte[] adressMAC ;
     private InetAddress adressIP;
-    private boolean isConnected ;
+    private boolean isConnected  ;
     User(String pseudo){
     	//vérification doublante
     	//notify all users
         this.pseudo = pseudo;
-        System.out.println("Current pseudo : " + pseudo);
+        System.out.println("Current pseudo : " + this.pseudo) ;
 	    try {
 
 	        this.adressIP = InetAddress.getLocalHost();
@@ -37,6 +38,7 @@ public class User {
 	        e.printStackTrace();
 
 	    }
+	    this.isConnected = false ;
     }
     public boolean isConnected() {
 		return isConnected;
@@ -66,5 +68,6 @@ public class User {
 		this.adressMAC = adressMAC;
 	}
     
+	
     
 }
