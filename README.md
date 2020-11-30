@@ -1,5 +1,5 @@
 # ChatSystem
-binôme: Yifan YANG & Mengxia SHI
+binôme: Yifan WANG & Mengxia SHI
 
 groupe: 4IR-B1
 

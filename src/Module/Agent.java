@@ -5,4 +5,8 @@ package  Module ;
 //vérification de pseudo
 //activation de fenetre de ChatSession etc.
 public class Agent{
+	public static void main(String[] args){
+		
+
+	}
 }
