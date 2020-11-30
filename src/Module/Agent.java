@@ -12,7 +12,7 @@ public class Agent{
    private MulticastSender MS;
    Agent(User user){
 	   this.MR = new MulticastReceiver(user);
-	   this.MS = new MulticastSender(user);
+	   //this.MS = new MulticastSender(user);
    }
 	public MulticastReceiver getMR() {
 		return MR;

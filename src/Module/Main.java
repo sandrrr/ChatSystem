@@ -14,7 +14,7 @@ public class Main {
         User user = new User(s);
         //MulticastReceiver MR = new MulticastReceiver(user);
         new Thread(new MulticastReceiver(user)).start(); 
-        MulticastSender MS = new MulticastSender(user);
-        MS.send_pseudo();	
+        MulticastSender MS = new MulticastSender(user,2444) ;
+        MS.send_getUserList();
 	}
 }

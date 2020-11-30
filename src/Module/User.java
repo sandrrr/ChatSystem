@@ -6,7 +6,7 @@ public class User {
     private String pseudo;
     private byte[] adressMAC ;
     private InetAddress adressIP;
-    private boolean isConnected  ;
+    private boolean isConnected;
     User(String pseudo){
     	//vérification doublante
     	//notify all users
