@@ -1,26 +1,25 @@
 package Module;
 
-import java.io.IOException;
+import java.io.IOException   ;
 import java.net.*;
 
 import Module.Data.Protocol;
 
 
-public class MulticastSender extends CommunicationMulticast  {
+public class MulticastSender extends CommunicationMulticast   {
 	 private DatagramSocket socket;
 	 private String adressMulticastIP = "224.0.0.1" ;
 	 private int port_TCP ; 
-	 private int  port_UDP = 2228 ;
+	 private int  port_UDP = 2302 ;
 	 private byte[] adressMAC ;
 	 private InetAddress adressIP;
 	 private String pseudo;
 	 
-	 private enum Protocol {
+	 private enum Protocol  {
 	        getUserList,
 	        activeUser,
 	        inactiveUser,
-	        editUsernamen,
-	        returnPseudo
+	        editUsernamen
 	    }
 
 	 public String DatatoString(String data, Protocol protocol, int port_source)  {
@@ -28,15 +27,22 @@ public class MulticastSender extends CommunicationMulticast  {
 	        for (int i = 0; i < this.adressMAC.length; i++) {
 	            sb.append(String.format("%02X%s", this.adressMAC[i], (i < this.adressMAC.length - 1) ? "-" : ""));        
 	        }
-	        return (sb.toString()+ ":" +port_source + ":" +adressIP.getHostAddress() +":"+protocol + ":" + data  );
+	        return (sb.toString()+ ":" +port_source +":"+protocol  +":" + pseudo +":" + data) ;
 	 }
-	  
-	 public MulticastSender(User user, int port_TCP) {  
+	 public MulticastSender(User user,int port_UDP) {  
 		    super(user);
 	        this.adressIP = user.getAdressIP();
 	        this.adressMAC = user.getAdressMAC();
 	        this.pseudo = user.getPseudo();
-	        this.port_TCP = port_TCP;
+	        this.port_TCP = user.getPort_tcp();
+	        this.port_UDP = port_UDP;
+	 }  
+	 public MulticastSender(User user) {  
+		    super(user); 
+	        this.adressIP = user.getAdressIP();
+	        this.adressMAC = user.getAdressMAC();
+	        this.pseudo = user.getPseudo();
+	        this.port_TCP = user.getPort_tcp();
 	 }  
 	//TCP's job
 	/*public void  send_pseudo() throws IOException{ //revoie le pseudo de cet utilsiateur

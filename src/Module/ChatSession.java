@@ -1,9 +1,9 @@
-package  Module ;
+package  Module    ;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
+ import java.net.Socket;
 //Session pour que deux, voir plusieurs personnes puissent communiquer
 
 public class ChatSession extends Thread {
