@@ -1,0 +1,51 @@
+/* Font */
+@font-face {
+    src: url('./Fonts/calibri.ttf');
+}
+
+@font-face {
+    src: url('./Fonts/calibrib.ttf');
+}
+
+/* Global variables */
+* {
+    /* Colors */
+   -fx-dark-blue: #383e56;
+   -fx-saumon-orange: #f69e78;
+   -fx-beige: #eedad1;
+   -fx-dirty-rose: #d4b5b0;
+   -fx-white: #ffffff;
+}
+
+/* Default style */
+.root {
+    -fx-background-color: transparent;
+    -fx-font-size: 20px;
+    -fx-font-family: "Calibri";
+}
+
+.label {
+    -fx-text-fill: -fx-white;
+}
+
+.text-input {
+    -fx-text-fill: -fx-white;
+    -fx-background-color: transparent;
+}
+
+/* Font styles */
+.font-dark-blue {
+    -fx-text-fill: -fx-dark-blue;
+}
+
+.font-weight-bold {
+    -fx-font-weight: bold;
+}
+
+.font-size-xl {
+    -fx-font-size: 50px;
+}
+
+.font-size-xs {
+    -fx-font-size: 15px;
+}
