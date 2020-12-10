@@ -10,16 +10,17 @@
 /* Global variables */
 * {
     /* Colors */
-   -fx-black: #191a1f;
-   -fx-dark-gray: #23262b;
-   -fx-light-gray: #2E3339;
+   -fx-dark-blue: #383e56;
+   -fx-saumon-orange: #f69e78;
+   -fx-beige: #eedad1;
+   -fx-dirty-rose: #d4b5b0;
    -fx-white: #ffffff;
 }
 
 /* Default style */
 .root {
-    -fx-background-color: black;
-    -fx-font-size: 35px;
+    -fx-background-color: transparent;
+    -fx-font-size: 20px;
     -fx-font-family: "Calibri";
 }
 
@@ -32,18 +33,13 @@
     -fx-background-color: transparent;
 }
 
-/* Background styles */
-.bg-dark-gray {
-    -fx-background-color: -fx-dark-gray;
-}
-
 /* Font styles */
 .font-weight-bold {
     -fx-font-weight: bold;
 }
 
-.font-size-s {
-    -fx-font-size: 30px;
+.font-size-xl {
+    -fx-font-size: 50px;
 }
 
 .font-size-xs {
