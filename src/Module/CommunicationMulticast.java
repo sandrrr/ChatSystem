@@ -1,7 +1,7 @@
-package Module;
+package Module  ; 
 
 
-import java.net.InetAddress;
+import java.net.InetAddress  ;
 import java.net.MulticastSocket;
 
 //Communication en mode broadcast

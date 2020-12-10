@@ -1,17 +1,17 @@
-package Module;
+package Module   ;
 
 import java.net.InetAddress;
 import java.io.*;
 
 public class Data {
 	
-    public enum Protocol {
+    public enum Protocol  {
         getUserList,
         activeUser,
         inactiveUser,
         editUsernamen,
         returnPseudo
-    }
+    } 
 
 	
     private InetAddress addrIP; //src
