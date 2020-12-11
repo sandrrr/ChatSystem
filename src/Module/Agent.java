@@ -34,7 +34,8 @@ public class Agent {
 			port_TCP = Integer.parseInt(s); 
 	        User user = new User(pseudo,port_TCP);
 	        //MulticastReceiver MR = new MulticastReceiver(user);
-	        new Thread(new TCPreceiver(user)).start(); 
+	        CommunicationUnicast MU = new CommunicationUnicast(port_TCP);
+	      
 	        new Thread(new MulticastReceiver(user,port_multicast)).start(); 
 	        
 	        MulticastSender MS = new MulticastSender(user,port_multicast)  ;

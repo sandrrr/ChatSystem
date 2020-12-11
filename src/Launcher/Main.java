@@ -1,3 +1,4 @@
+package Launcher;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,8 +8,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Main extends Application {
-    private Stage primaryStage;
-    private Parent root;
+    private static Stage primaryStage;
+    private static Parent root;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -19,9 +20,9 @@ public class Main extends Application {
         startSignin();
     }
 
-    public void startSignin() {
+    public  static void startSignin() {
         try {
-            root = new FXMLLoader(getClass().getResource("View/Signin.fxml")).load();
+            root = new FXMLLoader(Main.class.getResource("../View/Signin.fxml")).load();
             primaryStage.setScene(new Scene(root, 1000, 600));
             primaryStage.show();
         } catch (IOException e) {
@@ -29,15 +30,23 @@ public class Main extends Application {
         }
     }
 
-    public void startChat() {
+    public static void startChat() {
         try {
-            root = new FXMLLoader(getClass().getResource("View/Chat.fxml")).load();
+            root = new FXMLLoader(Main.class.getResource("../View/Chat.fxml")).load();
             primaryStage.setScene(new Scene(root, 1000, 600));
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    public static void Update_Userlist() {
+        try {
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static void main(String[] args) {
         launch(args);

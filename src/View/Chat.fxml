@@ -4,6 +4,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
@@ -13,34 +14,21 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" stylesheets="@Chat.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox prefWidth="300.0">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: -fx-dark-blue;">
                <children>
-                  <Label styleClass="font-weight-bold" text="Personnes connectées" />
+                  <Label styleClass="font-weight-bold" text="User Online" />
                </children>
                <padding>
                   <Insets left="20.0" />
                </padding>
             </HBox>
-            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: -fx-dark-blue;" VBox.vgrow="ALWAYS">
+            <ScrollPane fx:id="Userlist" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: -fx-dark-blue;" VBox.vgrow="ALWAYS">
                <content>
-                  <VBox style="-fx-background-color: -fx-dark-blue;">
-                     <children>
-                        <VBox VBox.vgrow="NEVER">
-                           <children>
-                              <Label text="Yifan" />
-                              <Label style="-fx-opacity: 0.5;" text="Exemple de message Exemple de message Exemple de message" />
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-                           </padding>
-                        </VBox>
-                     </children>
-                  </VBox>
+                  <ListView prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: -fx-dark-blue -fx-dark-blue;" />
                </content>
             </ScrollPane>
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: -fx-saumon-orange;">
@@ -96,32 +84,7 @@
             </HBox>
             <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: -fx-beige;" VBox.vgrow="ALWAYS">
                <content>
-                  <VBox spacing="15.0" style="-fx-background-color: -fx-beige;">
-                     <children>
-                        <Label style="-fx-background-color: -fx-white; -fx-background-radius: 5px;" styleClass="font-dark-blue" text="Exemple de message">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </Label>
-                        <HBox alignment="TOP_RIGHT" VBox.vgrow="NEVER">
-                           <children>
-                              <Label style="-fx-background-color: -fx-saumon-orange; -fx-background-radius: 5px;" styleClass="font-dark-blue" text="Exemple de message">
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </padding>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <Label maxWidth="400.0" style="-fx-background-color: -fx-white; -fx-background-radius: 5px;" styleClass="font-dark-blue" text="Exemple de message Exemple de message Exemple de message Exemple de message Exemple de message v v " wrapText="true">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </padding>
-                  </VBox>
+                  <ListView prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: -fx-dirty-rose -fx-dirty-rose;" />
                </content>
             </ScrollPane>
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: -fx-white;">

@@ -1,5 +1,7 @@
 package Module   ;
 import java.net.*;
+import java.util.Collections;
+import java.util.Enumeration;
 
 //utilisateur
 public class User {
@@ -26,7 +28,7 @@ public class User {
 	}
 
 	//local user
-	User(String pseudo) {  // on toruve un port pour la communication tcp si on ne precise pas un port
+	public User(String pseudo) {  // on toruve un port pour la communication tcp si on ne precise pas un port
     	//vérification doublante
     	//notify all users
         this.pseudo = pseudo;
@@ -69,12 +71,27 @@ public class User {
         System.out.println("Current pseudo : " + this.pseudo) ;
 	    try {
 
-	        this.adressIP = InetAddress.getLocalHost();
+	        //this.adressIP = InetAddress.getLocalHost();
+	        
+	        InetAddress theOneAddress = null;
+	        Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
+	        for (NetworkInterface netint : Collections.list(nets)) {
+	            if (!netint.isLoopback()) {
+	                theOneAddress = Collections.list(netint.getInetAddresses()).stream().findFirst().orElse(null);
+	                if (theOneAddress != null) {
+	                    break;
+	                }
+	            }
+	        }
+	        
+	        this.adressIP = theOneAddress;
+	        
 	        System.out.println("Current IP address : " + adressIP.getHostAddress());
 
 	        NetworkInterface network = NetworkInterface.getByInetAddress(adressIP);
 
 	        this.adressMAC = network.getHardwareAddress();
+	        
 
 	        System.out.print("Current MAC address : ");
 
@@ -84,15 +101,11 @@ public class User {
 	        }
 	        System.out.println(sb.toString());
 
-	    } catch (UnknownHostException e) {
+	    } catch (Exception e) {
 
 	        e.printStackTrace();
 
-	    } catch (SocketException e){
-
-	        e.printStackTrace();
-
-	    }
+	    } 
 	    this.isConnected = false ;
     }
     
