@@ -39,13 +39,6 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
-    public static void Update_Userlist() {
-        try {
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     public static void main(String[] args) {
