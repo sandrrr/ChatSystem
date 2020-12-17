@@ -25,25 +25,31 @@ public class ChatSession extends Thread {
              String data =  buf.readLine();  
              if (data.substring(0,data.indexOf(":")).equals("Message")) {
             	 // create_socket_sender(socket.getPort(),socket.getInetAddress());
+                 out = new ObjectOutputStream(socket.getOutputStream());
+                 out.flush();
+                 in = new ObjectInputStream(socket.getInputStream());
             	 this.start(); //when receives messages
              }
-            	 
              else {
             	 received_user(data, socket.getInetAddress()); //when receives a new user
             	 socket.close(); //receives only one message so close
              }
-            	 
-            	 
         } catch (IOException e) {
             e.printStackTrace();
         }
         
     }
-    
-    
-   
-    
-     
+
+    public void sendMessage(String text) {
+        try {
+            new Message(text,false);
+            out.writeObject(text);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void received_user(String data, InetAddress IP) {
     	 int port_src = Integer.parseInt(data.substring(data.indexOf(":")+1,data.indexOf(":",18)));
          //System.out.println("TCPreceiver_thread port: "+ port_src);
@@ -59,8 +65,7 @@ public class ChatSession extends Thread {
 			 UserList.affiche_list();
 		 }
     }
-    
-    
+
     public void close(){
     	try {
     		//socket_sender.close();
@@ -78,7 +83,7 @@ public class ChatSession extends Thread {
             try {
                 Object objectIn = in.readObject();
                 if (objectIn instanceof String){
-                    System.out.println("Received: " + objectIn);
+                    new Message((String) objectIn,true);
                 }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
