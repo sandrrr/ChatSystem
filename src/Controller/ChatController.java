@@ -1,6 +1,7 @@
 package Controller;
 
 import Launcher.Main;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -44,6 +45,13 @@ public class ChatController implements Initializable {
 
     @FXML
     void sendClick(MouseEvent event) {
+        System.out.println(messageField.getText());
+        messageField.setText("");
+    }
 
+    @FXML
+    void sendKeyboard(ActionEvent event) {
+        System.out.println(messageField.getText());
+        messageField.setText("");
     }
 }

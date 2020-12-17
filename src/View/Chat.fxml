@@ -131,7 +131,7 @@
                   <Insets left="20.0" right="10.0" />
                </padding>
                <children>
-                  <TextField fx:id="messageField" focusTraversable="false" promptText="Type something to send..." styleClass="font-dark-blue" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="messageField" focusTraversable="false" onAction="#sendKeyboard" promptText="Type something to send..." styleClass="font-dark-blue" HBox.hgrow="ALWAYS" />
                   <Separator maxWidth="2.0" minWidth="2.0" orientation="VERTICAL" prefWidth="2.0" style="-fx-background-color: -fx-beige; -fx-border-width: 0px;">
                      <HBox.margin>
                         <Insets left="20.0" right="10.0" />
