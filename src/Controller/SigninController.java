@@ -2,6 +2,7 @@ package Controller;
 import Launcher.Main;
 import Module.*;
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -9,13 +10,15 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 
 public class SigninController {
-    public TextField username;
+    @FXML
+    private TextField username;
 
 
     public void onSubmit(Event e) {
         String username = this.username.getText();
         System.out.println(username);
         User user = new User(username);
+        Main.setUser(user);
         CommunicationUnicast MU = new CommunicationUnicast(user.getPort_tcp());
         new Thread(new MulticastReceiver(user)).start();
         MulticastSender MS = new MulticastSender(user,2302);
