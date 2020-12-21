@@ -1,4 +1,9 @@
 package Launcher;
+
+import Model.CommunicationMulticast;
+import Model.CommunicationUnicast;
+import Model.User;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -6,23 +11,36 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import Module.User;
+import java.net.URL;
 
 public class Main extends Application {
     private static Stage primaryStage;
-    private static Parent root;
     private static User user;
+    private static final CommunicationMulticast multicast = new CommunicationMulticast();
+    private static final CommunicationUnicast unicast = new CommunicationUnicast();
+
+    static {
+        try {
+            user = new User();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static User getUser() {
         return user;
     }
 
-    public static void setUser(User user) {
-        Main.user = user;
+    public static CommunicationMulticast getMulticast() {
+        return multicast;
+    }
+
+    public static CommunicationUnicast getUnicast() {
+        return unicast;
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) {
         Main.primaryStage = primaryStage;
         primaryStage.setTitle("Chat System");
         primaryStage.setAlwaysOnTop(false);
@@ -31,18 +49,16 @@ public class Main extends Application {
     }
 
     public static void startSignin() {
-        try {
-            root = new FXMLLoader(Main.class.getResource("../View/Signin.fxml")).load();
-            primaryStage.setScene(new Scene(root, 1000, 600));
-            primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        startScene(Main.class.getResource("../View/Signin.fxml"));
     }
 
     public static void startChat() {
+        startScene(Main.class.getResource("../View/Chat.fxml"));
+    }
+
+    private static void startScene(URL url) {
         try {
-            root = new FXMLLoader(Main.class.getResource("../View/Chat.fxml")).load();
+            Parent root = new FXMLLoader(url).load();
             primaryStage.setScene(new Scene(root, 1000, 600));
             primaryStage.show();
         } catch (IOException e) {
@@ -50,6 +66,11 @@ public class Main extends Application {
         }
     }
 
+    @Override
+    public void stop() throws Exception {
+        unicast.close();
+        multicast.close();
+    }
 
     public static void main(String[] args) {
         launch(args);

@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 public class ChatController implements Initializable {
     @Override //lancer au démarrage de l'écran
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        username.setText(Main.getUser().getPseudo());
+        username.setText(Main.getUser().getUsername());
     }
 
     @FXML
