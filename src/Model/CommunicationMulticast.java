@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.ListController;
 import Launcher.Launcher;
 import Launcher.Main;
 
@@ -7,6 +8,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
 
 //Communication en mode broadcast
 //principalement utilisé pour 'vérifier doublante de pseudo'
@@ -14,7 +17,7 @@ import java.net.*;
 public class CommunicationMulticast implements Runnable {
     private InetAddress addressIP;
     private MulticastSocket socket;
-    private UserList userList;
+    private final List<User> userList = new ArrayList<>();
 
     public CommunicationMulticast() {
         try {
@@ -53,16 +56,16 @@ public class CommunicationMulticast implements Runnable {
 
                 switch (mcPacket.protocol) {
                     case "newUser":
-                        if (userList.verifyUsername(mcPacket.data)) {
+                        if (verifyUsername(mcPacket.data)) {
                             ChatSession chatSession = new ChatSession(new Socket(packet.getAddress(), CommunicationUnicast.port));
                             chatSession.sendMessage(new MulticastPacket("newUser", Main.getUser().getUsername()).toString());
                             if (!Main.getUser().getUsername().equals(mcPacket.data)) {
-                                userList.addToUserList(new User(mcPacket.data, packet.getAddress(), mcPacket.addrMac, chatSession));
+                                userList.add(new User(mcPacket.data, packet.getAddress(), mcPacket.addrMac, chatSession));
                             }
                         }
                         break;
                     case "editUser":
-                        for (User user : userList.getUserList()) {
+                        for (User user : userList) {
                             if (user.getAddressMAC().equals(mcPacket.addrMac)) {
                                 user.setUsername(mcPacket.data);
                                 break;
@@ -70,7 +73,13 @@ public class CommunicationMulticast implements Runnable {
                         }
                         break;
                     case "removeUser":
-                        userList.removeFromUserList(mcPacket.addrMac);
+                        for (User user : userList) {
+                            if (user.getAddressMAC().equals(mcPacket.addrMac)) {
+                                user.getChatSession().close();
+                                userList.remove(user);
+                                break;
+                            }
+                        }
                         break;
                 }
 
@@ -100,17 +109,26 @@ public class CommunicationMulticast implements Runnable {
         }
     }
 
-    public UserList getUserList() {
+    public List<User> getUserList() {
         return userList;
     }
 
     public void initUserList() {
-        userList = new UserList();
+        userList.clear();
         send(new MulticastPacket("newUser", Main.getUser().getUsername()));
     }
 
+    public boolean verifyUsername(String username) {
+        for (User user : userList) {
+            if (username.equals(user.getUsername())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void editUsername(String username) throws Exception {
-        if (userList.verifyUsername(username)) {
+        if (verifyUsername(username)) {
             Main.getUser().setUsername(username);
             send(new MulticastPacket("editUser", username));
         }

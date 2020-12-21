@@ -70,7 +70,7 @@ public class ChatSession extends Thread {
                     } else {
                         MulticastPacket packet = new MulticastPacket((String) objectIn);
                         if (packet.protocol.equals("newUser")) {
-                            Main.getMulticast().getUserList().addToUserList(new User(packet.data, socket.getInetAddress(), packet.addrMac, this));
+                            Main.getMulticast().getUserList().add(new User(packet.data, socket.getInetAddress(), packet.addrMac, this));
                         }
                     }
                 }

@@ -54,7 +54,7 @@ public class CommunicationUnicast extends Thread {
     }
 
     public void closeAllChatSession() {
-        for (User user : Main.getMulticast().getUserList().getUserList()) {
+        for (User user : Main.getMulticast().getUserList()) {
             user.getChatSession().close();
         }
     }

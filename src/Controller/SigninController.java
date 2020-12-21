@@ -20,7 +20,7 @@ public class SigninController {
             //wait 1s to fill the userlist
             Thread.sleep(1000);
 
-            if (Main.getMulticast().getUserList().verifyUsername(username)) {
+            if (Main.getMulticast().verifyUsername(username)) {
                 //DEBUG
                 Launcher.printDebug(Main.getMulticast().getUserList().toString());
 
