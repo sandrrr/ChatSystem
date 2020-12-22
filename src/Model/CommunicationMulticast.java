@@ -17,7 +17,7 @@ import java.util.List;
 public class CommunicationMulticast implements Runnable {
     private InetAddress addressIP;
     private MulticastSocket socket;
-    private final List<User> userList = new ArrayList<>();
+    private final ListController<User> userList = new ListController<>();
 
     public CommunicationMulticast() {
         try {
@@ -61,6 +61,8 @@ public class CommunicationMulticast implements Runnable {
                             chatSession.sendMessage(new MulticastPacket("newUser", Main.getUser().getUsername()).toString());
                             if (!Main.getUser().getUsername().equals(mcPacket.data)) {
                                 userList.add(new User(mcPacket.data, packet.getAddress(), mcPacket.addrMac, chatSession));
+                            } else {
+                                chatSession.close();
                             }
                         }
                         break;
@@ -109,7 +111,7 @@ public class CommunicationMulticast implements Runnable {
         }
     }
 
-    public List<User> getUserList() {
+    public ListController<User> getUserList() {
         return userList;
     }
 
@@ -157,6 +159,7 @@ public class CommunicationMulticast implements Runnable {
 
     public void close() {
         if (Main.getUser().isConnected()) {
+            userList.removeListener();
             send(new MulticastPacket("removeUser", ""));
             Main.getUser().setIsConnected(false);
         }
