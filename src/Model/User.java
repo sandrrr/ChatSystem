@@ -58,7 +58,7 @@ public class User {
 
         //DEBUG
         if (Launcher.DEBUG == 2) {
-            addressMAC = 'A' + addressMAC.substring(1);
+            addressMAC = 'G' + addressMAC.substring(1);
         }
         Launcher.printDebug("USER: " + username + " - " + addressMAC + " (" + addressIP + ')');
     }
