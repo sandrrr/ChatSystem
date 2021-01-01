@@ -61,9 +61,6 @@ public class CommunicationUnicast extends Thread {
 
     public void close() {
         try {
-            if (Main.getUser().isConnected()) {
-                closeAllChatSession();
-            }
             active = false;
             serverSocket.close();
         } catch (IOException e) {

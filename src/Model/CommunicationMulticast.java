@@ -155,11 +155,16 @@ public class CommunicationMulticast implements Runnable {
         }
     }
 
+    public void logout() {
+        userList.removeListener();
+        Main.getUnicast().closeAllChatSession();
+        send(new MulticastPacket("removeUser", ""));
+        Main.getUser().setIsConnected(false);
+    }
+
     public void close() {
         if (Main.getUser().isConnected()) {
-            userList.removeListener();
-            send(new MulticastPacket("removeUser", ""));
-            Main.getUser().setIsConnected(false);
+            logout();
         }
         try {
             socket.leaveGroup(addressIP);

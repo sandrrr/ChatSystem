@@ -136,9 +136,7 @@ public class ChatController implements Initializable {
 
     @FXML
     void logoutClick(MouseEvent event) {
-        //TODO: logout
-        Main.getUnicast().close();
-        Main.getMulticast().close();
+        Main.getMulticast().logout();
         Main.startSignin();
     }
 
