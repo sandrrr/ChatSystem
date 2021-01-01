@@ -32,14 +32,14 @@
             </ScrollPane>
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: -fx-saumon-orange;">
                <children>
-                  <Label fx:id="username" text="Mengxia">
+                  <Label fx:id="username">
                      <styleClass>
                         <String fx:value="font-dark-blue" />
                         <String fx:value="font-weight-bold" />
                      </styleClass>
                   </Label>
                   <Region HBox.hgrow="ALWAYS" />
-                  <ImageView fx:id="logout" fitHeight="25.0" fitWidth="25.0" onMouseClicked="#logoutClick" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="25.0" fitWidth="25.0" onMouseClicked="#logoutClick" pickOnBounds="true" preserveRatio="true">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -61,50 +61,21 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: -fx-dirty-rose;">
                <children>
-                  <Label text="Yifan">
+                  <Label fx:id="usernameActiveChat">
                      <styleClass>
                         <String fx:value="font-dark-blue" />
                         <String fx:value="font-weight-bold" />
                      </styleClass>
                   </Label>
                   <Region HBox.hgrow="ALWAYS" />
-                  <ImageView fx:id="close" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#closeClick" pickOnBounds="true" preserveRatio="true">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <image>
-                        <Image url="@Images/close.png" />
-                     </image>
-                  </ImageView>
                </children>
                <padding>
                   <Insets left="20.0" right="20.0" />
                </padding>
             </HBox>
-            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: -fx-beige;" VBox.vgrow="ALWAYS">
+            <ScrollPane fx:id="messageScroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: -fx-beige;" vvalue="1.0" VBox.vgrow="ALWAYS">
                <content>
-                  <VBox spacing="15.0" style="-fx-background-color: -fx-beige;">
-                     <children>
-                        <Label style="-fx-background-color: -fx-white; -fx-background-radius: 5px;" styleClass="font-dark-blue" text="Exemple de message">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </Label>
-                        <HBox alignment="TOP_RIGHT" VBox.vgrow="NEVER">
-                           <children>
-                              <Label style="-fx-background-color: -fx-saumon-orange; -fx-background-radius: 5px;" styleClass="font-dark-blue" text="Exemple de message">
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </padding>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <Label maxWidth="400.0" style="-fx-background-color: -fx-white; -fx-background-radius: 5px;" styleClass="font-dark-blue" text="Exemple de message Exemple de message Exemple de message Exemple de message Exemple de message v v " wrapText="true">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </Label>
-                     </children>
+                  <VBox fx:id="messageList" spacing="15.0" style="-fx-background-color: -fx-beige;">
                      <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </padding>
@@ -125,7 +96,7 @@
                         <Insets left="20.0" right="10.0" />
                      </HBox.margin>
                   </Separator>
-                  <ImageView fx:id="send" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#sendClick" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#sendClick" pickOnBounds="true" preserveRatio="true">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>

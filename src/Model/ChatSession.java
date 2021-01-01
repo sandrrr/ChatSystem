@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.ListController;
 import Launcher.Launcher;
 import Launcher.Main;
 
@@ -17,6 +18,8 @@ public class ChatSession extends Thread {
     private final Socket socket;
     private volatile boolean active = true;
 
+    private final ListController<Message> messageList = new ListController<>();
+
     public ChatSession(Socket socket) {
         this.socket = socket;
         try {
@@ -27,12 +30,17 @@ public class ChatSession extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void sendMessage(String text) {
+        sendMessage(text, true);
+    }
+
+    public void sendMessage(String text, boolean addToList) {
         try {
-            new Message(text, false);
+            if (addToList) {
+                messageList.add(new Message(text, false));
+            }
             out.writeObject(text);
             out.flush();
 
@@ -41,16 +49,6 @@ public class ChatSession extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void close() {
-        try {
-            active = false;
-            socket.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     @Override
@@ -66,7 +64,7 @@ public class ChatSession extends Thread {
                     Launcher.printDebug("U-R: " + objectIn);
 
                     if (Main.getUser().isConnected()) {
-                        new Message((String) objectIn, true);
+                        messageList.add(new Message((String) objectIn, true));
                     } else {
                         MulticastPacket packet = new MulticastPacket((String) objectIn);
                         if (packet.protocol.equals("newUser")) {
@@ -81,6 +79,20 @@ public class ChatSession extends Thread {
 
         //DEBUG
         Launcher.printDebug("Chat session stopped");
+    }
+
+    public ListController<Message> getMessageList() {
+        return messageList;
+    }
+
+    public void close() {
+        try {
+            active = false;
+            socket.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
 

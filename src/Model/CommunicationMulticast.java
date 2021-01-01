@@ -8,8 +8,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.List;
 
 //Communication en mode broadcast
 //principalement utilisé pour 'vérifier doublante de pseudo'
@@ -58,7 +56,7 @@ public class CommunicationMulticast implements Runnable {
                     case "newUser":
                         if (verifyUsername(mcPacket.data)) {
                             ChatSession chatSession = new ChatSession(new Socket(packet.getAddress(), CommunicationUnicast.port));
-                            chatSession.sendMessage(new MulticastPacket("newUser", Main.getUser().getUsername()).toString());
+                            chatSession.sendMessage(new MulticastPacket("newUser", Main.getUser().getUsername()).toString(), false);
                             if (!Main.getUser().getUsername().equals(mcPacket.data)) {
                                 userList.add(new User(mcPacket.data, packet.getAddress(), mcPacket.addrMac, chatSession));
                             } else {
