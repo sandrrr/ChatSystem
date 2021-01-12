@@ -1,6 +1,7 @@
 package Controller;
 
 import Launcher.Main;
+import Model.Database;
 import Model.Message;
 import Model.User;
 import javafx.event.ActionEvent;
@@ -54,6 +55,7 @@ public class ChatController implements Initializable {
 
         //When a new message arrive, scroll down to the new message
         messageList.heightProperty().addListener(observable -> messageScroll.setVvalue(1D));
+
     }
 
     private VBox activeUserVBox;
@@ -138,6 +140,7 @@ public class ChatController implements Initializable {
     void logoutClick(MouseEvent event) {
         Main.getMulticast().logout();
         Main.startSignin();
+        Database.close_connection();
     }
 
     @FXML

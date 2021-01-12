@@ -1,11 +1,14 @@
 package Model;
 
+import Controller.ListController;
 import Launcher.Launcher;
 import Launcher.Main;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Iterator;
 
 //communication de 1 vers 1
 //Principalement pour ChatSession dans le cas de 1 utilisqteur parle à un autre

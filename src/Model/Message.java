@@ -12,4 +12,5 @@ public class Message {
         this.received = received;
         this.msg = msg;
     }
+
 }
