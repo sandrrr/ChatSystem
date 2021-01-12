@@ -7,7 +7,9 @@ import Launcher.Main;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Iterator;
 
 //Session pour que deux, voir plusieurs personnes puissent communiquer
 public class ChatSession extends Thread {
@@ -15,10 +17,10 @@ public class ChatSession extends Thread {
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
-    private final Socket socket;
+    public static Socket socket;
     private volatile boolean active = true;
 
-    private final ListController<Message> messageList = new ListController<>();
+    public static ListController<Message> messageList = new ListController<>();
 
     public ChatSession(Socket socket) {
         this.socket = socket;
@@ -39,7 +41,9 @@ public class ChatSession extends Thread {
     public void sendMessage(String text, boolean addToList) {
         try {
             if (addToList) {
-                messageList.add(new Message(text, false));
+                Message m = new Message(text, false);
+                messageList.add(m);
+                Database.insert_history(get_MAC(),m);
             }
             out.writeObject(text);
             out.flush();
@@ -64,12 +68,15 @@ public class ChatSession extends Thread {
                     Launcher.printDebug("U-R: " + objectIn);
 
                     if (Main.getUser().isConnected()) {
-                        messageList.add(new Message((String) objectIn, true));
+                        Message rcv = new Message((String) objectIn, true);
+                        messageList.add(rcv);
+                        Database.insert_history(get_MAC(),rcv);
                     } else {
                         MulticastPacket packet = new MulticastPacket((String) objectIn);
                         if (packet.protocol.equals("newUser")) {
                             Main.getMulticast().getUserList().add(new User(packet.data, socket.getInetAddress(), packet.addrMac, this));
                         }
+                        get_histories();
                     }
                 }
             } catch (IOException | ClassNotFoundException e) {
@@ -94,5 +101,21 @@ public class ChatSession extends Thread {
         }
 
     }
+    public static String  get_MAC (){
+        InetAddress IP = socket.getInetAddress();
+        ListController list  = Main.getMulticast().getUserList();
+        for (Iterator<User> iter = list.iterator(); ((Iterator) iter).hasNext(); ) {
+            User u = iter.next();
+            if (u.getAddressIP().equals(IP))
+                return u.getAddressMAC();
+        }
+        return ("Error");
+    }
+    public static void get_histories(){
+        if( ! get_MAC().equals("Error")){
+            Database.get_messages(get_MAC(),messageList);
+        }
+    }
+
 }
 

@@ -2,6 +2,7 @@ package Launcher;
 
 import Model.CommunicationMulticast;
 import Model.CommunicationUnicast;
+import Model.Database;
 import Model.User;
 
 import javafx.application.Application;
@@ -46,6 +47,7 @@ public class Main extends Application {
         primaryStage.setAlwaysOnTop(false);
         primaryStage.setResizable(false);
         startSignin();
+        Database.connect();
     }
 
     public static void startSignin() {
@@ -70,6 +72,7 @@ public class Main extends Application {
     public void stop() throws Exception {
         unicast.close();
         multicast.close();
+        Database.close_connection();
     }
 
     public static void main(String[] args) {

@@ -59,6 +59,7 @@ public class CommunicationMulticast implements Runnable {
                             chatSession.sendMessage(new MulticastPacket("newUser", Main.getUser().getUsername()).toString(), false);
                             if (!Main.getUser().getUsername().equals(mcPacket.data)) {
                                 userList.add(new User(mcPacket.data, packet.getAddress(), mcPacket.addrMac, chatSession));
+                                Database.get_messages(mcPacket.addrMac,chatSession.getMessageList()); //database update
                             } else {
                                 chatSession.close();
                             }
