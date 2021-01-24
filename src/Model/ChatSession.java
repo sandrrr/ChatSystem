@@ -9,7 +9,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Iterator;
 
 //Session pour que deux, voir plusieurs personnes puissent communiquer
 public class ChatSession extends Thread {
@@ -17,10 +16,10 @@ public class ChatSession extends Thread {
     private ObjectInputStream in;
     private ObjectOutputStream out;
 
-    public static Socket socket;
+    private final Socket socket;
     private volatile boolean active = true;
 
-    public static ListController<Message> messageList = new ListController<>();
+    private final ListController<Message> messageList = new ListController<>();
 
     public ChatSession(Socket socket) {
         this.socket = socket;
@@ -99,23 +98,22 @@ public class ChatSession extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-    public static String  get_MAC (){
+
+    public String  get_MAC (){
         InetAddress IP = socket.getInetAddress();
-        ListController list  = Main.getMulticast().getUserList();
-        for (Iterator<User> iter = list.iterator(); ((Iterator) iter).hasNext(); ) {
-            User u = iter.next();
-            if (u.getAddressIP().equals(IP))
+        for (User u : Main.getMulticast().getUserList()) {
+            if (u.getAddressIP().equals(IP)) {
                 return u.getAddressMAC();
+            }
         }
         return ("Error");
     }
-    public static void get_histories(){
+
+    public void get_histories(){
         if( ! get_MAC().equals("Error")){
             Database.get_messages(get_MAC(),messageList);
         }
     }
-
 }
 
