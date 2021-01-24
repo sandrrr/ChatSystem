@@ -26,6 +26,7 @@ public class SigninController {
 
                 Main.getUser().setIsConnected(true);
                 new Thread(Main.getMulticast()).start();
+                Main.getServlet().sendRequest("PUT", "addressMAC=" + Main.getUser().getAddressMAC() + "&username=" + Main.getUser().getUsername());
                 Main.startChat();
             } else {
                 Main.getUnicast().closeAllChatSession();

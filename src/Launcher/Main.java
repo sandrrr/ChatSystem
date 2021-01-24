@@ -1,9 +1,6 @@
 package Launcher;
 
-import Model.CommunicationMulticast;
-import Model.CommunicationUnicast;
-import Model.Database;
-import Model.User;
+import Model.*;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +16,7 @@ public class Main extends Application {
     private static User user;
     private static final CommunicationMulticast multicast = new CommunicationMulticast();
     private static final CommunicationUnicast unicast = new CommunicationUnicast();
+    private static final CommunicationServlet servlet = new CommunicationServlet();
 
     static {
         try {
@@ -38,6 +36,10 @@ public class Main extends Application {
 
     public static CommunicationUnicast getUnicast() {
         return unicast;
+    }
+
+    public static CommunicationServlet getServlet() {
+        return servlet;
     }
 
     @Override
@@ -72,6 +74,7 @@ public class Main extends Application {
     public void stop() throws Exception {
         unicast.close();
         multicast.close();
+        servlet.close();
         Database.close_connection();
     }
 

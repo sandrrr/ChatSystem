@@ -52,40 +52,7 @@ public class CommunicationMulticast implements Runnable {
                 //DEBUG
                 Launcher.printDebug("M-R: " + mcPacket);
 
-                switch (mcPacket.protocol) {
-                    case "newUser":
-                        if (verifyUsername(mcPacket.data)) {
-                            ChatSession chatSession = new ChatSession(new Socket(packet.getAddress(), CommunicationUnicast.port));
-                            chatSession.sendMessage(new MulticastPacket("newUser", Main.getUser().getUsername()).toString(), false);
-                            if (!Main.getUser().getUsername().equals(mcPacket.data)) {
-                                userList.add(new User(mcPacket.data, packet.getAddress(), mcPacket.addrMac, chatSession));
-                                Database.get_messages(mcPacket.addrMac,chatSession.getMessageList()); //database update
-                            } else {
-                                chatSession.close();
-                            }
-                        }
-                        break;
-                    case "editUser":
-                        for (User user : userList) {
-                            if (user.getAddressMAC().equals(mcPacket.addrMac)) {
-                                user.setUsername(mcPacket.data);
-                                break;
-                            }
-                        }
-                        break;
-                    case "removeUser":
-                        for (User user : userList) {
-                            if (user.getAddressMAC().equals(mcPacket.addrMac)) {
-                                user.getChatSession().close();
-                                userList.remove(user);
-                                break;
-                            }
-                        }
-                        break;
-                }
-
-                //DEBUG
-                Launcher.printDebug(userList.toString());
+                receive(packet.getAddress(), mcPacket);
             } catch (IOException e) {
                 //Socket closed;
             }
@@ -93,6 +60,43 @@ public class CommunicationMulticast implements Runnable {
 
         //DEBUG
         Launcher.printDebug("Multicast server stopped");
+    }
+
+    private void receive(InetAddress addressIP, MulticastPacket mcPacket) throws IOException {
+        switch (mcPacket.protocol) {
+            case "newUser":
+                if (verifyUsername(mcPacket.data)) {
+                    ChatSession chatSession = new ChatSession(new Socket(addressIP, CommunicationUnicast.port));
+                    chatSession.sendMessage(new MulticastPacket("newUser", Main.getUser().getUsername()).toString(), false);
+                    if (!Main.getUser().getUsername().equals(mcPacket.data)) {
+                        userList.add(new User(mcPacket.data, addressIP, mcPacket.addrMac, chatSession));
+                        Database.get_messages(mcPacket.addrMac,chatSession.getMessageList()); //database update
+                    } else {
+                        chatSession.close();
+                    }
+                }
+                break;
+            case "editUser":
+                for (User user : userList) {
+                    if (user.getAddressMAC().equals(mcPacket.addrMac)) {
+                        user.setUsername(mcPacket.data);
+                        break;
+                    }
+                }
+                break;
+            case "removeUser":
+                for (User user : userList) {
+                    if (user.getAddressMAC().equals(mcPacket.addrMac)) {
+                        user.getChatSession().close();
+                        userList.remove(user);
+                        break;
+                    }
+                }
+                break;
+        }
+
+        //DEBUG
+        Launcher.printDebug(userList.toString());
     }
 
     private void send(MulticastPacket packet) {
@@ -156,10 +160,20 @@ public class CommunicationMulticast implements Runnable {
         }
     }
 
+    public void receiveFromServlet(String message) {
+        try {
+            MulticastPacket mcPacket = new MulticastPacket(message);
+            receive(null, mcPacket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void logout() {
         userList.removeListener();
         Main.getUnicast().closeAllChatSession();
         send(new MulticastPacket("removeUser", ""));
+        Main.getServlet().sendRequest("DELETE", "addressMAC="+Main.getUser().getAddressMAC());
         Main.getUser().setIsConnected(false);
     }
 
