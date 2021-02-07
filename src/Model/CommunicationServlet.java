@@ -60,7 +60,7 @@ public class CommunicationServlet extends Thread {
             //DEBUG
             Launcher.printDebug("S-S: " + method + " /Servlet?" + params);
 
-            URL url = new URL("http://localhost:8080/ChatSystemServlet/Servlet?" + params);
+            URL url = new URL("https://srv-gei-tomcat.insa-toulouse.fr/ChatSystemServlet_SHI_WANG/Servlet?" + params);
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
             http.setDoOutput(true);
@@ -70,7 +70,9 @@ public class CommunicationServlet extends Thread {
                 Launcher.printDebug("Servlet error");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //DEBUG
+            Launcher.printDebug("Servlet unreachable");
+            //e.printStackTrace();
         }
     }
 
