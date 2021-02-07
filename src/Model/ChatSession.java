@@ -18,6 +18,7 @@ public class ChatSession extends Thread {
 
     private final Socket socket;
     private volatile boolean active = true;
+    private User user;
 
     private final ListController<Message> messageList = new ListController<>();
 
@@ -33,6 +34,10 @@ public class ChatSession extends Thread {
         }
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public void sendMessage(String text) {
         sendMessage(text, true);
     }
@@ -42,7 +47,7 @@ public class ChatSession extends Thread {
             if (addToList) {
                 Message m = new Message(text, false);
                 messageList.add(m);
-                Database.insert_history(get_MAC(),m);
+                Database.insert_history(user.getAddressMAC(), m);
             }
             out.writeObject(text);
             out.flush();
@@ -69,13 +74,13 @@ public class ChatSession extends Thread {
                     if (Main.getUser().isConnected()) {
                         Message rcv = new Message((String) objectIn, true);
                         messageList.add(rcv);
-                        Database.insert_history(get_MAC(),rcv);
+                        Database.insert_history(user.getAddressMAC(), rcv);
                     } else {
                         MulticastPacket packet = new MulticastPacket((String) objectIn);
                         if (packet.protocol.equals("newUser")) {
                             Main.getMulticast().getUserList().add(new User(packet.data, socket.getInetAddress(), packet.addrMac, this));
                         }
-                        get_histories();
+                        Database.get_messages(user.getAddressMAC(), messageList);
                     }
                 }
             } catch (IOException | ClassNotFoundException e) {
@@ -97,22 +102,6 @@ public class ChatSession extends Thread {
             socket.close();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    public String  get_MAC (){
-        InetAddress IP = socket.getInetAddress();
-        for (User u : Main.getMulticast().getUserList()) {
-            if (u.getAddressIP().equals(IP)) {
-                return u.getAddressMAC();
-            }
-        }
-        return ("Error");
-    }
-
-    public void get_histories(){
-        if( ! get_MAC().equals("Error")){
-            Database.get_messages(get_MAC(),messageList);
         }
     }
 }
