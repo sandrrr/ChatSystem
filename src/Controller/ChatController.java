@@ -3,22 +3,22 @@ package Controller;
 import Launcher.Main;
 import Model.Message;
 import Model.User;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.StageStyle;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ChatController implements Initializable {
@@ -43,6 +43,7 @@ public class ChatController implements Initializable {
     @Override //lancé au démarrage de l'écran
     public void initialize(URL url, ResourceBundle resourceBundle) {
         username.setText(Main.getUser().getUsername());
+        Main.getUser().addUsernameListener((oldUsername, newUsername) -> username.setText(newUsername));
 
         for (User user : Main.getMulticast().getUserList()) {
             addUserToUserlist(user);
@@ -67,10 +68,19 @@ public class ChatController implements Initializable {
             onUserActive(user, vb);
         });
 
-        Label username = new Label(user.getUsername());
-        vb.getChildren().add(username);
+        Label name = new Label(user.getUsername());
+        user.addUsernameListener((oldUsername, newUsername) -> {
+            Platform.runLater(() -> {
+                name.setText(newUsername);
+                if (usernameActiveChat.getText().equals(oldUsername)) {
+                    usernameActiveChat.setText(newUsername);
+                }
+            });
+        });
+        vb.getChildren().add(name);
 
-        Label lastMessage = new Label("");
+        Message lastMsg = user.getChatSession().getMessageList().last();
+        Label lastMessage = new Label(lastMsg != null ? lastMsg.msg : "");
         lastMessage.setStyle("-fx-opacity: 0.5;");
         vb.getChildren().add(lastMessage);
 
@@ -89,6 +99,12 @@ public class ChatController implements Initializable {
         for (Node node : userList.getChildren()) {
             if (node.getId().equals(user.getUsername())) {
                 userList.getChildren().remove(node);
+                if (user.getUsername().equals(activeUser.getUsername())) {
+                    activeUser = null;
+                    activeUserVBox = null;
+                    usernameActiveChat.setText("");
+                    messageList.getChildren().clear();
+                }
                 return;
             }
         }
@@ -151,9 +167,36 @@ public class ChatController implements Initializable {
     }
 
     private void sendMessage() {
+        String message = messageField.getText().trim();
+        if (message.isEmpty()) return;
         if (activeUser != null) {
-            activeUser.getChatSession().sendMessage(messageField.getText());
+            activeUser.getChatSession().sendMessage(message);
             messageField.setText("");
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Choose someone to discuss with first!");
+            alert.initStyle(StageStyle.UNDECORATED);
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    void changeUsername(MouseEvent event) {
+        TextInputDialog dialog = new TextInputDialog(username.getText());
+        dialog.initStyle(StageStyle.UTILITY);
+        dialog.setContentText("Please enter your username:");
+        Optional<String> result = dialog.showAndWait();
+        if (result.isEmpty()) return;
+        String name = result.get().trim();
+        if (!name.equals(username.getText())) {
+            try {
+                Main.getMulticast().editUsername(name);
+            } catch (Exception err) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("This username is already used!");
+                alert.initStyle(StageStyle.UNDECORATED);
+                alert.showAndWait();
+            }
         }
     }
 }

@@ -76,6 +76,15 @@ public class ListController<T> implements Iterable<T> {
         list.get().clear();
     }
 
+    public T first() {
+        return list.get().get(0);
+    }
+
+    public T last() {
+        if (list.get().isEmpty()) return null;
+        return list.get().get(list.get().size() - 1);
+    }
+
     @Override
     public String toString() {
         return list.get().toString();

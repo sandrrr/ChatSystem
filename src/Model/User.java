@@ -6,13 +6,14 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 
-//utilisateur
+//Utilisateur
 public class User {
     private String username;
     private InetAddress addressIP;
     private String addressMAC;
     private ChatSession chatSession;
     private boolean isConnected;
+    private UsernameListener usernameListener;
 
     public User() throws Exception {
         NetworkInterface network = findNetworkInterface();
@@ -26,11 +27,12 @@ public class User {
         this.addressIP = addressIP;
         this.addressMAC = addressMAC;
         this.chatSession = chatSession;
+        chatSession.setUser(this);
     }
 
     private NetworkInterface findNetworkInterface() throws Exception {
-        Enumeration<NetworkInterface> networkInterfaces = null;
-        NetworkInterface networkInterface = null;
+        Enumeration<NetworkInterface> networkInterfaces;
+        NetworkInterface networkInterface;
         networkInterfaces = NetworkInterface.getNetworkInterfaces();
         while (networkInterfaces.hasMoreElements()) {
             networkInterface = networkInterfaces.nextElement();
@@ -54,6 +56,7 @@ public class User {
     }
 
     public void setUsername(String username) {
+        if (usernameListener != null) usernameListener.usernameChanged(this.username, username);
         this.username = username;
 
         //DEBUG
@@ -61,6 +64,10 @@ public class User {
             addressMAC = 'G' + addressMAC.substring(1);
         }
         Launcher.printDebug("USER: " + username + " - " + addressMAC + " (" + addressIP + ')');
+    }
+
+    public void addUsernameListener(UsernameListener listener) {
+        usernameListener = listener;
     }
 
     public InetAddress getAddressIP() {
@@ -88,3 +95,5 @@ public class User {
         return username;
     }
 }
+
+

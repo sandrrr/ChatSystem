@@ -32,11 +32,14 @@
             </ScrollPane>
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: -fx-saumon-orange;">
                <children>
-                  <Label fx:id="username">
+                  <Label fx:id="username" onMouseClicked="#changeUsername">
                      <styleClass>
                         <String fx:value="font-dark-blue" />
                         <String fx:value="font-weight-bold" />
                      </styleClass>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Label>
                   <Region HBox.hgrow="ALWAYS" />
                   <ImageView fitHeight="25.0" fitWidth="25.0" onMouseClicked="#logoutClick" pickOnBounds="true" preserveRatio="true">

@@ -4,14 +4,18 @@ import Launcher.Launcher;
 import Launcher.Main;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.stage.StageStyle;
 
 public class SigninController {
     @FXML
     private TextField username;
 
     public void onSubmit(Event e) {
-        String username = this.username.getText();
+        String username = this.username.getText().trim();
+
+        if (username.isEmpty()) return;
 
         try {
             Main.getUser().setUsername(username);
@@ -30,6 +34,10 @@ public class SigninController {
                 Main.startChat();
             } else {
                 Main.getUnicast().closeAllChatSession();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("This username is already used!");
+                alert.initStyle(StageStyle.UNDECORATED);
+                alert.showAndWait();
             }
         } catch (Exception exception) {
             exception.printStackTrace();

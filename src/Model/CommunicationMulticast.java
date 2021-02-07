@@ -136,8 +136,9 @@ public class CommunicationMulticast implements Runnable {
         if (verifyUsername(username)) {
             Main.getUser().setUsername(username);
             send(new MulticastPacket("editUser", username));
+        } else {
+            throw new Exception("Username already taken");
         }
-        throw new Exception("Username already taken");
     }
 
     private void clearSocketBuffer(DatagramPacket packet) {
