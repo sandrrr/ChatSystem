@@ -53,11 +53,11 @@ public class Main extends Application {
     }
 
     public static void startSignin() {
-        startScene(Main.class.getResource("../View/Signin.fxml"));
+        startScene(Main.class.getResource("/View/Signin.fxml"));
     }
 
     public static void startChat() {
-        startScene(Main.class.getResource("../View/Chat.fxml"));
+        startScene(Main.class.getResource("/View/Chat.fxml"));
     }
 
     private static void startScene(URL url) {
