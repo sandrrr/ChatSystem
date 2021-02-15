@@ -5,9 +5,9 @@ Groupe: 4IR-B1
 
 Dépôt git du servlet: https://github.com/sandrrr/ChatSystemServlet
 
-Version Java minimum: 10
+Version Java minimale: 10
 
-#Manuel d'installation et d'utilisation
+# Manuel d'installation et d'utilisation
 1. Cloner ce répertoire sur l'hôte
     ```
     git clone git@github.com:sandrrr/ChatSystem.git
@@ -18,7 +18,7 @@ Version Java minimum: 10
     ```
 3. Vous pouvez maintenant vous connecter et chatter
 
-#Livrables
+# Livrables
 
 - Diagrammes UML : dossier ```diagrams```
 - Rapport COO : ```rapports/rapport_COO_SHI_WANG.pdf```
