@@ -99,7 +99,7 @@ public class ChatController implements Initializable {
         for (Node node : userList.getChildren()) {
             if (node.getId().equals(user.getUsername())) {
                 userList.getChildren().remove(node);
-                if (user.getUsername().equals(activeUser.getUsername())) {
+                if (activeUser != null && user.getUsername().equals(activeUser.getUsername())) {
                     activeUser = null;
                     activeUserVBox = null;
                     usernameActiveChat.setText("");

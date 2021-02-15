@@ -163,8 +163,14 @@ public class CommunicationMulticast implements Runnable {
 
     public void receiveFromServlet(String message) {
         try {
-            MulticastPacket mcPacket = new MulticastPacket(message);
-            receive(null, mcPacket);
+            if (message.split(":").length > 3) {
+                int index = message.lastIndexOf(":");
+                MulticastPacket mcPacket = new MulticastPacket(message.substring(0, index));
+                receive(InetAddress.getByName(message.substring(index+1)), mcPacket);
+            } else {
+                MulticastPacket mcPacket = new MulticastPacket(message);
+                receive(null, mcPacket);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

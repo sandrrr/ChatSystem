@@ -6,6 +6,7 @@ import Launcher.Main;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 
 public class CommunicationServlet extends Thread {
     public static /*DEBUG final*/ int port = 53000;
@@ -61,13 +62,14 @@ public class CommunicationServlet extends Thread {
             Launcher.printDebug("S-S: " + method + " /Servlet?" + params);
 
             URL url = new URL("https://srv-gei-tomcat.insa-toulouse.fr/ChatSystemServlet_SHI_WANG/Servlet?" + params);
+            //URL url = new URL("http://localhost:8080/ChatSystemServlet/Servlet?" + params);
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
             http.setDoOutput(true);
 
             if (http.getResponseCode() >= 400) {
                 //DEBUG
-                Launcher.printDebug("Servlet error");
+                Launcher.printDebug("Servlet error: " + new String(http.getErrorStream().readAllBytes(), StandardCharsets.UTF_8));
             }
         } catch (IOException e) {
             //DEBUG

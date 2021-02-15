@@ -2,6 +2,7 @@ package Controller;
 
 import Launcher.Launcher;
 import Launcher.Main;
+import Model.User;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -18,9 +19,11 @@ public class SigninController {
         if (username.isEmpty()) return;
 
         try {
-            Main.getUser().setUsername(username);
+            User user = Main.getUser();
+            user.setUsername(username);
 
             Main.getMulticast().initUserList();
+            Main.getServlet().sendRequest("PUT", "addressMAC=" + user.getAddressMAC() + "&username=" + user.getUsername());
             //wait 1s to fill the userlist
             Thread.sleep(1000);
 
@@ -28,9 +31,8 @@ public class SigninController {
                 //DEBUG
                 Launcher.printDebug(Main.getMulticast().getUserList().toString());
 
-                Main.getUser().setIsConnected(true);
+                user.setIsConnected(true);
                 new Thread(Main.getMulticast()).start();
-                Main.getServlet().sendRequest("PUT", "addressMAC=" + Main.getUser().getAddressMAC() + "&username=" + Main.getUser().getUsername());
                 Main.startChat();
             } else {
                 Main.getUnicast().closeAllChatSession();
